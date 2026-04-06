@@ -19,13 +19,18 @@ public class Match3Grid : MonoBehaviour
         {
             for (int y = 0; y < height; y++)
             {
-                Vector2 position = new Vector2(x, y) ;
-                GameObject obj =Instantiate(Mathc3Prefab, position, Quaternion.identity);
-                Bubble bubble = obj.GetComponent<Bubble>();
-                bubble.SetType(GetRandomType());
-                grid[x, y] = bubble;  
+                InitializedGrid(x, y);
             }
         }
+    }
+
+    void InitializedGrid(int x, int y)
+    {
+        Vector2 position = new Vector2(x, y);
+        GameObject obj = Instantiate(Mathc3Prefab, position, Quaternion.identity);
+        Bubble bubble = obj.GetComponent<Bubble>();
+        bubble.SetType(GetRandomType());
+        grid[x, y] = bubble;
     }
 
     BubbleType GetRandomType()
@@ -34,28 +39,33 @@ public class Match3Grid : MonoBehaviour
         return (BubbleType)random;
     }
 
+
     public void CheckMatch(int x, int y)
     { 
         if (grid[x, y] == null) return;
         Bubble center = grid[x, y];
         var mathces = new List<Bubble>();
+        var removeCenter=false;
         mathces.AddRange(CheckDirection(x, y, 1, 0));
         mathces.AddRange(CheckDirection(x, y, -1, 0));
         if (mathces.Count >= 2)
-        { 
-            mathces.Add(center);
-            RemoveMatches(mathces);
-            return;
-        }
-        mathces.Clear();
-        mathces.AddRange(CheckDirection(x, y, 0, 1));
-        mathces.AddRange(CheckDirection(x, y, 0, -1));
-        if (mathces.Count >= 2)
         {
             mathces.Add(center);
-            RemoveMatches(mathces);
-            return;
+            removeCenter=true;  
         }
+        else
+        {
+            mathces.Clear();
+        }
+        var deltaRange = mathces.Count;
+        mathces.AddRange(CheckDirection(x, y, 0, 1));
+        mathces.AddRange(CheckDirection(x, y, 0, -1));
+        if (mathces.Count - deltaRange >= 2)
+        {
+            if (!removeCenter)
+                mathces.Add(center);
+        }
+        RemoveMatches(mathces);
     }
     List<Bubble> CheckDirection(int startX, int startY, int dx, int dy)
     { 
@@ -64,7 +74,7 @@ public class Match3Grid : MonoBehaviour
 
         var x = startX + dx;
         var y = startY + dy;
-        while (x > 0 && x < width && y > 0 && y < height)
+        while (x >= 0 && x < width && y >= 0 && y < height)
         {
             if (grid[x, y] != null && grid[x, y].type == cageType)
             {
@@ -98,6 +108,7 @@ public class Match3Grid : MonoBehaviour
     {
         for (int x = 0; x < width; x++)
             CollapseColumn(x);
+        CheckOnEmpty();
     }
 
     void CollapseColumn(int x)
@@ -123,9 +134,22 @@ public class Match3Grid : MonoBehaviour
         }
     }
 
+    void CheckOnEmpty()
+    {
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (grid[x, y] == null)
+                    { InitializedGrid(x, y); }
+            }
+        }
+    }
+
     void MoveBubble(Bubble bubble, int x, int y)
     { 
         Vector2 newPosition= new Vector2(x, y);
         bubble.transform.position = newPosition;
     }
+
 }

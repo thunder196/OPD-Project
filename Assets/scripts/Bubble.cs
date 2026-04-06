@@ -23,7 +23,6 @@ public class Bubble: MonoBehaviour
         int y = Mathf.FloorToInt(transform.position.y);
         x = Mathf.Clamp(x, 0, grid.width - 1);
         y = Mathf.Clamp(y, 0, grid.height - 1);
-
         grid.CheckMatch(x, y);
     }
     void UpdateColour()
