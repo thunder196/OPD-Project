@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\thunder\\My project\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|c:\\users\\thunder\\my project\\assets\\scripts\\bubble.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\bubble.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|c:\\users\\thunder\\my project\\assets\\scripts\\match3grid.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\match3grid.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -19,12 +23,25 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "Bubble.cs",
+              "DocumentMoniker": "C:\\Users\\thunder\\My project\\Assets\\scripts\\Bubble.cs",
+              "RelativeDocumentMoniker": "Assets\\scripts\\Bubble.cs",
+              "ToolTip": "C:\\Users\\thunder\\My project\\Assets\\scripts\\Bubble.cs",
+              "RelativeToolTip": "Assets\\scripts\\Bubble.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAQwB0AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-04T11:56:17.709Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "Match3Grid.cs",
               "DocumentMoniker": "C:\\Users\\thunder\\My project\\Assets\\scripts\\Match3Grid.cs",
               "RelativeDocumentMoniker": "Assets\\scripts\\Match3Grid.cs",
               "ToolTip": "C:\\Users\\thunder\\My project\\Assets\\scripts\\Match3Grid.cs",
               "RelativeToolTip": "Assets\\scripts\\Match3Grid.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAABJAAAAAAAAAA==",
+              "ViewState": "AgIAAEMAAAAAAAAAAAAcwGAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-02T19:13:14.666Z",
               "EditorCaption": ""

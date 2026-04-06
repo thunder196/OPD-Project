@@ -92,5 +92,40 @@ public class Match3Grid : MonoBehaviour
             grid[x, y] = null;
             Destroy(b.gameObject);
         }
+        CollapseGrid();
+    }
+
+    void CollapseGrid()
+    {
+        for (int x = 0; x < width; x++)
+            CollapseCollumn(x);
+    }
+
+    void CollapseCollumn(int x)
+    {
+        for (int y = 0; y < height; y++)
+        {
+            if (grid[x, y] == null)
+            {
+                for (int yAbove = y + 1; y < height; y++)
+                {
+                    if (grid[x, yAbove] != null)
+                    {
+                        grid[x, y] = grid[x, yAbove];
+                        grid[x, yAbove] = null;
+
+                        MoveBubble(grid[x, y], x, y);
+                        break;
+
+                    }
+                }
+            }
+        }
+    }
+
+    void MoveBubble(Bubble bubble, int x, int y)
+    { 
+        Vector2 newPosition= new Vector2(x*spacing, y*spacing);
+        bubble.transform.position = newPosition;
     }
 }
