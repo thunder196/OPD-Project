@@ -5,7 +5,6 @@ public class Match3Grid : MonoBehaviour
 {
     public int width = 6;
     public int height = 6;
-    public float spacing = 1.05f; 
     public GameObject Mathc3Prefab;
     private Bubble[,] grid;
     void Start()
@@ -20,7 +19,7 @@ public class Match3Grid : MonoBehaviour
         {
             for (int y = 0; y < height; y++)
             {
-                Vector2 position = new Vector2(x * spacing, y * spacing);
+                Vector2 position = new Vector2(x, y) ;
                 GameObject obj =Instantiate(Mathc3Prefab, position, Quaternion.identity);
                 Bubble bubble = obj.GetComponent<Bubble>();
                 bubble.SetType(GetRandomType());
@@ -87,8 +86,8 @@ public class Match3Grid : MonoBehaviour
         foreach (Bubble b in mathces)
         { 
             Vector2 pos = b.transform.position;
-            var x = Mathf.RoundToInt(pos.x / spacing);
-            var y = Mathf.RoundToInt(pos.y / spacing);
+            var x = Mathf.RoundToInt(pos.x);
+            var y = Mathf.RoundToInt(pos.y);
             grid[x, y] = null;
             Destroy(b.gameObject);
         }
@@ -98,26 +97,27 @@ public class Match3Grid : MonoBehaviour
     void CollapseGrid()
     {
         for (int x = 0; x < width; x++)
-            CollapseCollumn(x);
+            CollapseColumn(x);
     }
 
-    void CollapseCollumn(int x)
+    void CollapseColumn(int x)
     {
-        for (int y = 0; y < height; y++)
+        bool moved = true;
+
+        while (moved)
         {
-            if (grid[x, y] == null)
+            moved = false;
+
+            for (int y = 0; y < height - 1; y++)
             {
-                for (int yAbove = y + 1; y < height; y++)
+                if (grid[x, y] == null && grid[x, y + 1] != null)
                 {
-                    if (grid[x, yAbove] != null)
-                    {
-                        grid[x, y] = grid[x, yAbove];
-                        grid[x, yAbove] = null;
+                    grid[x, y] = grid[x, y + 1];
+                    grid[x, y + 1] = null;
 
-                        MoveBubble(grid[x, y], x, y);
-                        break;
+                    MoveBubble(grid[x, y], x, y);
 
-                    }
+                    moved = true;
                 }
             }
         }
@@ -125,7 +125,7 @@ public class Match3Grid : MonoBehaviour
 
     void MoveBubble(Bubble bubble, int x, int y)
     { 
-        Vector2 newPosition= new Vector2(x*spacing, y*spacing);
+        Vector2 newPosition= new Vector2(x, y);
         bubble.transform.position = newPosition;
     }
 }

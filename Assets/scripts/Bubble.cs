@@ -19,8 +19,8 @@ public class Bubble: MonoBehaviour
     void OnMouseDown()
     {
         Match3Grid grid = Object.FindAnyObjectByType<Match3Grid>();
-        int x = Mathf.FloorToInt(transform.position.x / grid.spacing);
-        int y = Mathf.FloorToInt(transform.position.y / grid.spacing);
+        int x = Mathf.FloorToInt(transform.position.x);
+        int y = Mathf.FloorToInt(transform.position.y);
         x = Mathf.Clamp(x, 0, grid.width - 1);
         y = Mathf.Clamp(y, 0, grid.height - 1);
 
