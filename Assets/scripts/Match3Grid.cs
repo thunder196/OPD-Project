@@ -26,11 +26,13 @@ public class Match3Grid : MonoBehaviour
 
     void InitializedGrid(int x, int y)
     {
-        Vector2 position = new Vector2(x, y);
-        GameObject obj = Instantiate(Mathc3Prefab, position, Quaternion.identity);
+        Vector3 spawnPos = new Vector3(x, height+1, 0);
+        Vector3 position = new Vector3(x, y, 0);
+        GameObject obj = Instantiate(Mathc3Prefab, spawnPos, Quaternion.identity);
         Bubble bubble = obj.GetComponent<Bubble>();
         bubble.SetType(GetRandomType());
         grid[x, y] = bubble;
+        StartCoroutine(Bubble.FallToPosition(obj.transform, position));
     }
 
     BubbleType GetRandomType()
@@ -44,28 +46,30 @@ public class Match3Grid : MonoBehaviour
     { 
         if (grid[x, y] == null) return;
         Bubble center = grid[x, y];
-        var mathces = new List<Bubble>();
-        var removeCenter=false;
-        mathces.AddRange(CheckDirection(x, y, 1, 0));
-        mathces.AddRange(CheckDirection(x, y, -1, 0));
-        if (mathces.Count >= 2)
+        var matchesx = new List<Bubble>();
+        var matchesy = new List<Bubble>();
+        matchesx.AddRange(CheckDirection(x, y, 1, 0));
+        matchesx.AddRange(CheckDirection(x, y, -1, 0));
+        matchesy.AddRange(CheckDirection(x, y, 0, 1));
+        matchesy.AddRange(CheckDirection(x, y, 0, -1));
+        if (matchesx.Count >= 2)
         {
-            mathces.Add(center);
-            removeCenter=true;  
+            matchesx.Add(center);
+            if (matchesy.Count >= 2)
+            {
+                matchesx.AddRange(matchesy);
+            }
+            RemoveMatches(matchesx);
+            return;
+
         }
-        else
-        {
-            mathces.Clear();
+        if (matchesy.Count >= 2) 
+        { 
+            matchesy.Add(center); 
+            RemoveMatches(matchesy);
+            return;
         }
-        var deltaRange = mathces.Count;
-        mathces.AddRange(CheckDirection(x, y, 0, 1));
-        mathces.AddRange(CheckDirection(x, y, 0, -1));
-        if (mathces.Count - deltaRange >= 2)
-        {
-            if (!removeCenter)
-                mathces.Add(center);
-        }
-        RemoveMatches(mathces);
+        return;
     }
     List<Bubble> CheckDirection(int startX, int startY, int dx, int dy)
     { 
@@ -101,37 +105,36 @@ public class Match3Grid : MonoBehaviour
             grid[x, y] = null;
             Destroy(b.gameObject);
         }
-        CollapseGrid();
+        CollapseColumn();
     }
 
-    void CollapseGrid()
+    void CollapseColumn()
     {
         for (int x = 0; x < width; x++)
-            CollapseColumn(x);
-        CheckOnEmpty();
-    }
-
-    void CollapseColumn(int x)
-    {
-        bool moved = true;
-
-        while (moved)
         {
-            moved = false;
-
-            for (int y = 0; y < height - 1; y++)
+            for (int y = 0; y < height; y++)
             {
-                if (grid[x, y] == null && grid[x, y + 1] != null)
+                if (grid[x, y] == null)
                 {
-                    grid[x, y] = grid[x, y + 1];
-                    grid[x, y + 1] = null;
+                    for (int aboveY = y + 1; aboveY < height; aboveY++)
+                    {
+                        if (grid[x, aboveY] != null)
+                        {
+                            var fallingPiece = grid[x, aboveY];
+                            grid[x, y] = fallingPiece;
+                            grid[x, aboveY] = null;
 
-                    MoveBubble(grid[x, y], x, y);
+                            Vector3 targetPos = new Vector3(x, y, 0);
 
-                    moved = true;
+                            StartCoroutine(Bubble.FallToPosition(fallingPiece.transform, targetPos, 0.2f));
+
+                            break;
+                        }
+                    }
                 }
             }
         }
+        CheckOnEmpty();
     }
 
     void CheckOnEmpty()
@@ -141,15 +144,10 @@ public class Match3Grid : MonoBehaviour
             for (int y = 0; y < height; y++)
             {
                 if (grid[x, y] == null)
-                    { InitializedGrid(x, y); }
+                { InitializedGrid(x, y); }
             }
         }
     }
 
-    void MoveBubble(Bubble bubble, int x, int y)
-    { 
-        Vector2 newPosition= new Vector2(x, y);
-        bubble.transform.position = newPosition;
-    }
 
 }

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Bubble: MonoBehaviour
@@ -25,6 +26,22 @@ public class Bubble: MonoBehaviour
         y = Mathf.Clamp(y, 0, grid.height - 1);
         grid.CheckMatch(x, y);
     }
+
+    public static IEnumerator FallToPosition(Transform obj, Vector3 targetPos, float duration = 0.2f)
+    {
+        Vector3 startPos = obj.position;
+        float time = 0;
+
+        while (time < duration)
+        {
+            obj.position = Vector3.Lerp(startPos, targetPos, time / duration);
+            time += Time.deltaTime;
+            yield return null;
+        }
+
+        obj.position = targetPos;
+    }
+
     void UpdateColour()
     {
         switch (type)
