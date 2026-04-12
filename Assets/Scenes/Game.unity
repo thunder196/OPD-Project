@@ -287,8 +287,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Match3Grid
   width: 6
   height: 6
-  spacing: 1.05
-  Mathc3Prefab: {fileID: 5616104925447293557, guid: b9adc858d0b99dc4ca15ab0d0e10e60f, type: 3}
+  Match3Prefab: {fileID: 5616104925447293557, guid: b9adc858d0b99dc4ca15ab0d0e10e60f, type: 3}
 --- !u!4 &988481034
 Transform:
   m_ObjectHideFlags: 0

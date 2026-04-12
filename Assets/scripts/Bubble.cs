@@ -20,11 +20,10 @@ public class Bubble: MonoBehaviour
     void OnMouseDown()
     {
         Match3Grid grid = Object.FindAnyObjectByType<Match3Grid>();
-        int x = Mathf.FloorToInt(transform.position.x);
-        int y = Mathf.FloorToInt(transform.position.y);
-        x = Mathf.Clamp(x, 0, grid.width - 1);
-        y = Mathf.Clamp(y, 0, grid.height - 1);
-        grid.CheckMatch(x, y);
+        if (grid != null)
+        {
+            grid.SelectBubble(this);
+        }
     }
 
     public static IEnumerator FallToPosition(Transform obj, Vector3 targetPos, float duration = 0.2f)
