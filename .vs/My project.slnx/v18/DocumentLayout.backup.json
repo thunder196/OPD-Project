@@ -18,8 +18,12 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 1,
@@ -28,7 +32,7 @@
               "RelativeDocumentMoniker": "Assets\\scripts\\Bubble.cs",
               "ToolTip": "C:\\Users\\thunder\\My project\\Assets\\scripts\\Bubble.cs",
               "RelativeToolTip": "Assets\\scripts\\Bubble.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAkAAAAAAAAAA==",
+              "ViewState": "AgIAAA0AAAAAAAAAAAA1wCkAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-04T11:56:17.709Z",
               "EditorCaption": ""
@@ -41,7 +45,7 @@
               "RelativeDocumentMoniker": "Assets\\scripts\\Match3Grid.cs",
               "ToolTip": "C:\\Users\\thunder\\My project\\Assets\\scripts\\Match3Grid.cs",
               "RelativeToolTip": "Assets\\scripts\\Match3Grid.cs",
-              "ViewState": "AgIAABgBAAAAAAAAAAAQwI0AAAAhAAAAAAAAAA==",
+              "ViewState": "AgIAACIBAAAAAAAAAAAAADkBAAAuAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-02T19:13:14.666Z",
               "EditorCaption": ""

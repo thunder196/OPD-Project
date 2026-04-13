@@ -28,6 +28,7 @@ public class Bubble: MonoBehaviour
 
     public static IEnumerator FallToPosition(Transform obj, Vector3 targetPos, float duration = 0.2f)
     {
+        if (obj==null) yield break;
         Vector3 startPos = obj.position;
         float time = 0;
 
@@ -37,8 +38,8 @@ public class Bubble: MonoBehaviour
             time += Time.deltaTime;
             yield return null;
         }
-
-        obj.position = targetPos;
+        if (obj!=null)
+            obj.position = targetPos;
     }
 
     void UpdateColour()

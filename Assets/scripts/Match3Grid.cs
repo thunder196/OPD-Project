@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using TMPro;
+using Unity.VisualScripting;
 
 public class Match3Grid : MonoBehaviour
 {
@@ -9,8 +11,13 @@ public class Match3Grid : MonoBehaviour
     public GameObject Match3Prefab; 
     private Bubble[,] grid;
     private Bubble firstSelected;
+    [Header("UI Setting")]
+    public TextMeshProUGUI scoreText;
+    private int currentScore = 0;
     void Start()
     {
+        currentScore = 0;
+        UpdateScoreUI();
         grid = new Bubble[width, height];
         GenerateValidBoard();
     }
@@ -22,6 +29,10 @@ public class Match3Grid : MonoBehaviour
         while (HasAnyMatchesOnBoard())
         {
             ReshuffleTypes();
+            while (CheckGridOnPossibleMove() == false)
+            {
+                ShuffleTheGrid();
+            }
         }
     }
 
@@ -94,29 +105,9 @@ public class Match3Grid : MonoBehaviour
     bool CheckAnyMatch(int x, int y)
     {
         if (grid[x, y] == null) return false;
-        var matchx = 1 + CountInDirection(x, y, 1, 0) + CountInDirection(x, y, -1, 0);
-        var matchy = 1 + CountInDirection(x, y, 0, 1) + CountInDirection(x, y, 0, -1);
+        var matchx = 1 + CheckDirection(x, y, 1, 0).Count + CheckDirection(x, y, -1, 0).Count;
+        var matchy = 1 + CheckDirection(x, y, 0, 1).Count + CheckDirection(x, y, 0, -1).Count;
         return matchx >= 3 || matchy >= 3;
-    }
-
-    int CountInDirection(int x, int y, int dx, int dy)
-    {
-        var type = grid[x, y].type;
-        var count = 0;
-        int nx = x + dx;
-        int ny = y + dy;
-
-        while (nx >= 0 && nx < width && ny >= 0 && ny < height && grid[nx, ny] != null)
-        {
-            if (grid[nx, ny].type == type)
-            {
-                count++;
-                nx += dx;
-                ny += dy;
-            }
-            else break;
-        }
-        return count;
     }
 
     public void SelectBubble(Bubble bubble)
@@ -132,6 +123,7 @@ public class Match3Grid : MonoBehaviour
             {
                 firstSelected.transform.localScale = new Vector3(0.9f, 0.9f, 1f);
                 firstSelected = null;
+                return;
             }
 
             if (IsAdjacent(firstSelected, bubble))
@@ -179,6 +171,67 @@ public class Match3Grid : MonoBehaviour
         }
     }
 
+    bool CheckGridOnPossibleMove()
+    {
+        for (var x = 0; x < width; x++)
+        {
+            for (var y = 0; y < height; y++)
+            {
+                if (grid[x, y] == null) continue;
+                if (x + 1 < width)
+                { 
+                    if (SwapAndCheckPossible(x, y, x+1, y)) return true;  
+                }
+                if (y + 1 < height) 
+                { 
+                    if (SwapAndCheckPossible(x, y, x, y+1)) return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    void ShuffleTheGrid()
+    { 
+        var listAllBubble = new List<Bubble>();
+        foreach (var b in grid)
+        { 
+            if (b!=null) listAllBubble.Add(b);
+        }
+        for (int i = 0; i < listAllBubble.Count; i++)
+        {
+            var temp = listAllBubble[i];
+            var randomIndex = Random.Range(i, listAllBubble.Count);
+            listAllBubble[i] = listAllBubble[randomIndex];
+            listAllBubble[randomIndex] = temp;
+        }
+
+        var index = 0;
+        for (var x = 0; x < width; x++)
+        {
+            for (var y = 0; y < height; y++)
+            {
+                grid[x, y] = listAllBubble[index];
+                StartCoroutine(Bubble.FallToPosition(grid[x, y].transform, new Vector3(x, y, 0)));
+                index++;
+            }
+        }
+
+    }
+
+    bool SwapAndCheckPossible(int x1, int y1, int x2, int y2)
+    { 
+        var temp = grid[x1, y1];
+        grid[x1, y1] = grid[x2, y2];
+        grid[x2, y2] = temp;
+
+        var hasmatch = CheckAnyMatch(x1, y1) || CheckAnyMatch(x2, y2);
+        grid[x2, y2] = grid[x1, y1];
+        grid[x1, y1] = temp;
+
+        return hasmatch;
+    }
+
     public void CheckMatch(int x, int y)
     {
         if (grid[x, y] == null) return;
@@ -207,6 +260,7 @@ public class Match3Grid : MonoBehaviour
     List<Bubble> CheckDirection(int startX, int startY, int dx, int dy)
     {
         var result = new List<Bubble>();
+        if (grid[startX, startY] == null) return result;
         var cageType = grid[startX, startY].type;
 
         var x = startX + dx;
@@ -227,6 +281,8 @@ public class Match3Grid : MonoBehaviour
 
     void RemoveMatches(List<Bubble> matches)
     {
+        var pointPerBubble = 10;
+        AddScore(matches.Count * pointPerBubble);
         foreach (Bubble b in matches)
         {
             for (int x = 0; x < width; x++)
@@ -252,7 +308,19 @@ public class Match3Grid : MonoBehaviour
         yield return new WaitForSeconds(0.2f); 
         FillEmptySpaces();
         yield return new WaitForSeconds(0.2f);
-        CheckMatchAfterFall();
+        if (HasAnyMatchesOnBoard())
+        {
+            CheckMatchAfterFall();
+        }
+        else if (!CheckGridOnPossibleMove())
+        {
+            var safetyNet = 0;
+            while (!CheckGridOnPossibleMove() && safetyNet < 50)
+            {
+                ShuffleTheGrid();
+                safetyNet++;
+            }
+        }
     }
 
     void CollapseColumn()
@@ -301,6 +369,17 @@ public class Match3Grid : MonoBehaviour
                 CheckMatch(x, y);
             }
         }
+    }
+    public void AddScore(int amount)
+    {
+        currentScore += amount;
+        UpdateScoreUI();
+    }
+
+    void UpdateScoreUI()
+    { 
+        if (scoreText != null)
+            scoreText.text = "Score: " + currentScore.ToString();
     }
 
 }
