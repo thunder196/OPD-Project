@@ -1,8 +1,7 @@
-using UnityEngine;
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
+using UnityEngine;
 
 public class Match3Grid : MonoBehaviour
 {
@@ -14,6 +13,7 @@ public class Match3Grid : MonoBehaviour
     [Header("UI Setting")]
     public TextMeshProUGUI scoreText;
     private int currentScore = 0;
+    private List<Bubble> listToRemove= new List<Bubble>();
     void Start()
     {
         currentScore = 0;
@@ -198,22 +198,45 @@ public class Match3Grid : MonoBehaviour
         { 
             if (b!=null) listAllBubble.Add(b);
         }
-        for (int i = 0; i < listAllBubble.Count; i++)
-        {
-            var temp = listAllBubble[i];
-            var randomIndex = Random.Range(i, listAllBubble.Count);
-            listAllBubble[i] = listAllBubble[randomIndex];
-            listAllBubble[randomIndex] = temp;
-        }
+        if (listAllBubble.Count == 0) return;
 
-        var index = 0;
+        if (listAllBubble.Count < height * width) return;
+
+        var isValid = false;
+        var attempts = 0;
+
+        while (!isValid && attempts < 100)
+        {
+            attempts++;
+
+            for (int i = 0; i < listAllBubble.Count; i++)
+            {
+                var temp = listAllBubble[i];
+                var randomIndex = Random.Range(i, listAllBubble.Count);
+                listAllBubble[i] = listAllBubble[randomIndex];
+                listAllBubble[randomIndex] = temp;
+            }
+            var index = 0;
+            for (var x = 0; x < width; x++)
+            {
+                for (var y = 0; y < height; y++)
+                {
+                    if (index < listAllBubble.Count)
+                    {
+                        grid[x, y] = listAllBubble[index];
+                        index++;
+                    }
+                }
+            }
+
+            if (!HasAnyMatchesOnBoard() && CheckGridOnPossibleMove())
+                isValid = true;
+        }
         for (var x = 0; x < width; x++)
         {
             for (var y = 0; y < height; y++)
             {
-                grid[x, y] = listAllBubble[index];
                 StartCoroutine(Bubble.FallToPosition(grid[x, y].transform, new Vector3(x, y, 0)));
-                index++;
             }
         }
 
@@ -279,6 +302,18 @@ public class Match3Grid : MonoBehaviour
         return result;
     }
 
+    bool CheckGridOnEmptyCage()
+    {
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (grid[x, y] == null) return true;
+            }
+        }
+        return false;
+    }
+
     void RemoveMatches(List<Bubble> matches)
     {
         var pointPerBubble = 10;
@@ -298,6 +333,7 @@ public class Match3Grid : MonoBehaviour
             }
             Destroy(b.gameObject);
         }
+        listToRemove.Clear();
         StartCoroutine(RefillRoutine());
     }
 
@@ -305,14 +341,14 @@ public class Match3Grid : MonoBehaviour
     {
         yield return new WaitForSeconds(0.1f); 
         CollapseColumn();
-        yield return new WaitForSeconds(0.2f); 
-        FillEmptySpaces();
         yield return new WaitForSeconds(0.2f);
+        FillEmptySpaces();
+        yield return new WaitForSeconds(0.3f);
         if (HasAnyMatchesOnBoard())
         {
             CheckMatchAfterFall();
         }
-        else if (!CheckGridOnPossibleMove())
+        else if (!CheckGridOnPossibleMove() && !HasAnyMatchesOnBoard())
         {
             var safetyNet = 0;
             while (!CheckGridOnPossibleMove() && safetyNet < 50)
@@ -366,9 +402,10 @@ public class Match3Grid : MonoBehaviour
         {
             for (int y = 0; y < height; y++)
             {
-                CheckMatch(x, y);
+                if (CheckAnyMatch(x, y)) listToRemove.Add(grid[x, y]);
             }
         }
+        RemoveMatches(listToRemove);
     }
     public void AddScore(int amount)
     {
