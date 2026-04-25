@@ -8,17 +8,17 @@ public class Match3Grid : MonoBehaviour
     public int width = 6;
     public int height = 6;
     public GameObject Match3Prefab; 
-    private Bubble[,] grid;
-    private Bubble firstSelected;
+    private Cage[,] grid;
+    private Cage firstSelected;
     [Header("UI Setting")]
     public TextMeshProUGUI scoreText;
     private int currentScore = 0;
-    private List<Bubble> listToRemove= new List<Bubble>();
+    private List<Cage> listToRemove = new();
     void Start()
     {
         currentScore = 0;
         UpdateScoreUI();
-        grid = new Bubble[width, height];
+        grid = new Cage[width, height];
         GenerateValidBoard();
     }
 
@@ -64,13 +64,13 @@ public class Match3Grid : MonoBehaviour
             spawnPos = new Vector3(x, height + y + 1, 0);
         }
         GameObject obj = Instantiate(Match3Prefab, spawnPos, Quaternion.identity, transform);
-        Bubble bubble = obj.GetComponent<Bubble>();
+        Cage bubble = obj.GetComponent<Cage>();
         bubble.SetType(GetRandomType());
         grid[x, y] = bubble;
 
         if (animate)
         {
-            StartCoroutine(Bubble.FallToPosition(obj.transform, finalPos));
+            StartCoroutine(Cage.FallToPosition(obj.transform, finalPos));
         }
     }
 
@@ -85,9 +85,9 @@ public class Match3Grid : MonoBehaviour
         }
     }
 
-    BubbleType GetRandomType()
+    CageType GetRandomType()
     {
-        return (BubbleType)Random.Range(1, 5);
+        return (CageType)Random.Range(1, 5);
     }
 
     bool HasAnyMatchesOnBoard()
@@ -110,7 +110,7 @@ public class Match3Grid : MonoBehaviour
         return matchx >= 3 || matchy >= 3;
     }
 
-    public void SelectBubble(Bubble bubble)
+    public void SelectBubble(Cage bubble)
     {
         if (firstSelected == null)
         {
@@ -135,14 +135,14 @@ public class Match3Grid : MonoBehaviour
         }
     }
 
-    bool IsAdjacent(Bubble b1, Bubble b2)
+    bool IsAdjacent(Cage b1, Cage b2)
     {
         var vector1 = b1.transform.position;
         var vector2 = b2.transform.position;
         return Vector2.Distance(vector1, vector2) <= 1.1f;
     }
 
-    IEnumerator SwapAndCheck(Bubble b1, Bubble b2)
+    IEnumerator SwapAndCheck(Cage b1, Cage b2)
     {
         var x1 = Mathf.FloorToInt(b1.transform.position.x);
         var y1 = Mathf.FloorToInt(b1.transform.position.y);
@@ -151,8 +151,8 @@ public class Match3Grid : MonoBehaviour
         grid[x1, y1] = b2;
         grid[x2, y2] = b1;
 
-        StartCoroutine(Bubble.FallToPosition(b1.transform, new Vector3(x2, y2, 0)));
-        yield return StartCoroutine(Bubble.FallToPosition(b2.transform, new Vector3(x1, y1, 0)));
+        StartCoroutine(Cage.FallToPosition(b1.transform, new Vector3(x2, y2, 0)));
+        yield return StartCoroutine(Cage.FallToPosition(b2.transform, new Vector3(x1, y1, 0)));
 
         var match1 = CheckAnyMatch(x1, y1);
         var match2 = CheckAnyMatch(x2, y2);
@@ -166,8 +166,8 @@ public class Match3Grid : MonoBehaviour
         {
             grid[x1, y1] = b1;
             grid[x2, y2] = b2;
-            StartCoroutine(Bubble.FallToPosition(b1.transform, new Vector3(x1, y1, 0)));
-            yield return StartCoroutine(Bubble.FallToPosition(b2.transform, new Vector3(x2, y2, 0)));
+            StartCoroutine(Cage.FallToPosition(b1.transform, new Vector3(x1, y1, 0)));
+            yield return StartCoroutine(Cage.FallToPosition(b2.transform, new Vector3(x2, y2, 0)));
         }
     }
 
@@ -193,7 +193,7 @@ public class Match3Grid : MonoBehaviour
 
     void ShuffleTheGrid()
     { 
-        var listAllBubble = new List<Bubble>();
+        var listAllBubble = new List<Cage>();
         foreach (var b in grid)
         { 
             if (b!=null) listAllBubble.Add(b);
@@ -236,7 +236,7 @@ public class Match3Grid : MonoBehaviour
         {
             for (var y = 0; y < height; y++)
             {
-                StartCoroutine(Bubble.FallToPosition(grid[x, y].transform, new Vector3(x, y, 0)));
+                StartCoroutine(Cage.FallToPosition(grid[x, y].transform, new Vector3(x, y, 0)));
             }
         }
 
@@ -259,14 +259,14 @@ public class Match3Grid : MonoBehaviour
     {
         if (grid[x, y] == null) return;
 
-        Bubble center = grid[x, y];
+        Cage center = grid[x, y];
         var matchesX = CheckDirection(x, y, 1, 0);
         matchesX.AddRange(CheckDirection(x, y, -1, 0));
 
         var matchesY = CheckDirection(x, y, 0, 1);
         matchesY.AddRange(CheckDirection(x, y, 0, -1));
 
-        var toRemove = new List<Bubble>();
+        var toRemove = new List<Cage>();
 
         if (matchesX.Count >= 2) toRemove.AddRange(matchesX);
         if (matchesY.Count >= 2) toRemove.AddRange(matchesY);
@@ -280,9 +280,9 @@ public class Match3Grid : MonoBehaviour
 
     
 
-    List<Bubble> CheckDirection(int startX, int startY, int dx, int dy)
+    List<Cage> CheckDirection(int startX, int startY, int dx, int dy)
     {
-        var result = new List<Bubble>();
+        var result = new List<Cage>();
         if (grid[startX, startY] == null) return result;
         var cageType = grid[startX, startY].type;
 
@@ -302,23 +302,11 @@ public class Match3Grid : MonoBehaviour
         return result;
     }
 
-    bool CheckGridOnEmptyCage()
-    {
-        for (int x = 0; x < width; x++)
-        {
-            for (int y = 0; y < height; y++)
-            {
-                if (grid[x, y] == null) return true;
-            }
-        }
-        return false;
-    }
-
-    void RemoveMatches(List<Bubble> matches)
+    void RemoveMatches(List<Cage> matches)
     {
         var pointPerBubble = 10;
         AddScore(matches.Count * pointPerBubble);
-        foreach (Bubble b in matches)
+        foreach (Cage b in matches)
         {
             for (int x = 0; x < width; x++)
             {
@@ -373,7 +361,7 @@ public class Match3Grid : MonoBehaviour
                         {
                             grid[x, y] = grid[x, aboveY];
                             grid[x, aboveY] = null;
-                            StartCoroutine(Bubble.FallToPosition(grid[x, y].transform, new Vector3(x, y, 0), 0.2f));
+                            StartCoroutine(Cage.FallToPosition(grid[x, y].transform, new Vector3(x, y, 0), 0.2f));
                             break;
                         }
                     }

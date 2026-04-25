@@ -4,31 +4,47 @@ using UnityEngine;
 public class Bubble: MonoBehaviour
 {
     public BubbleType type;
-    SpriteRenderer spriteRenderer;
-
+    private SpriteRenderer spriteRenderer;
+    private Rigidbody2D rb;
+    public int x;
+    public int y;
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     public void SetType(BubbleType newType)
-    { 
+    {
         type = newType;
         UpdateColour();
     }
 
     void OnMouseDown()
-    {
-        Match3Grid grid = Object.FindAnyObjectByType<Match3Grid>();
+    { 
+        BubbleGrid grid = Object.FindAnyObjectByType<BubbleGrid>();
         if (grid != null)
+            grid.CheckMatch(this);
+    }
+
+    public void UpdateColour()
+    {
+        switch (type)
         {
-            grid.SelectBubble(this);
+            case BubbleType.Red:
+                spriteRenderer.color = Color.red; break;
+            case BubbleType.Green:
+                spriteRenderer.color= Color.green; break;
+            case BubbleType.Blue: 
+                spriteRenderer.color= Color.blue; break;
+            case BubbleType.Yeelow:
+                spriteRenderer.color= Color.yellow; break;
         }
     }
 
     public static IEnumerator FallToPosition(Transform obj, Vector3 targetPos, float duration = 0.2f)
     {
-        if (obj==null) yield break;
+        if (obj == null) yield break;
         Vector3 startPos = obj.position;
         float time = 0;
 
@@ -38,33 +54,17 @@ public class Bubble: MonoBehaviour
             time += Time.deltaTime;
             yield return null;
         }
-        if (obj!=null)
+        if (obj != null)
             obj.position = targetPos;
+        Destroy(obj.gameObject);
     }
 
-    void UpdateColour()
-    {
-        switch (type)
-        {
-            case BubbleType.Red:
-                spriteRenderer.color = Color.red; 
-                break;
-            case BubbleType.Blue:
-                spriteRenderer.color = Color.blue;
-                break;
-            case BubbleType.Green:
-                spriteRenderer.color = Color.green;
-                break;
-            case BubbleType.Yellow:
-                spriteRenderer.color = Color.yellow;
-                break;
-        }
-    }
 }
+
 public enum BubbleType
 { 
-    Red=1,
+    Red = 1,
     Blue,
-    Green,
-    Yellow
+    Yeelow,
+    Green
 }
