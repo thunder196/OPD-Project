@@ -14,6 +14,8 @@ public class Match3Grid : MonoBehaviour
     public TextMeshProUGUI scoreText;
     private int currentScore = 0;
     private List<Cage> listToRemove = new();
+    [Header("Visual Assets")]
+    public Sprite[] crystalSprites;
     void Start()
     {
         currentScore = 0;
@@ -65,7 +67,8 @@ public class Match3Grid : MonoBehaviour
         }
         GameObject obj = Instantiate(Match3Prefab, spawnPos, Quaternion.identity, transform);
         Cage bubble = obj.GetComponent<Cage>();
-        bubble.SetType(GetRandomType());
+        CageType randomType = (CageType)Random.Range(1, 5);
+        bubble.SetType(randomType, crystalSprites[(int)randomType - 1]);
         grid[x, y] = bubble;
 
         if (animate)
@@ -80,14 +83,10 @@ public class Match3Grid : MonoBehaviour
         {
             for (int y = 0; y < height; y++)
             {
-                grid[x, y].SetType(GetRandomType());
+                CageType newType = (CageType)Random.Range(1, 5);
+                grid[x, y].SetType(newType, crystalSprites[(int)newType - 1]);
             }
         }
-    }
-
-    CageType GetRandomType()
-    {
-        return (CageType)Random.Range(1, 5);
     }
 
     bool HasAnyMatchesOnBoard()

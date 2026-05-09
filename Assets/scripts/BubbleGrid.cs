@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,9 +5,10 @@ public class BubbleGrid : MonoBehaviour
 {
     public int width = 10;
     public int height = 10;
-    public GameObject bubblePrefab;
+    public GameObject BubblePrefab;
     public Bubble[,] grid;
     private HashSet<Bubble> matchesFound = new HashSet<Bubble>();
+
     private void Start()
     {
         grid = new Bubble[width, height];
@@ -21,53 +21,50 @@ public class BubbleGrid : MonoBehaviour
         {
             for (int y = height - 1; y > height - 5; y--)
             {
-                InitializedGrid(x, y);
+                var b = (y % 2 == 0) ? 0.5f : 0;
+                InitializedGrid(x, y, x + b);
             }
         }
     }
 
-    void InitializedGrid(int x, int y)
+    void InitializedGrid(int x, int y, float realX)
     {
-        var position = new Vector3(x, y, 0);
-        var obj = Instantiate(bubblePrefab, position, Quaternion.identity);
+        var position = new Vector3(realX, y * 0.93f, 0);
+        var obj = Instantiate(BubblePrefab, position, Quaternion.identity);
         Bubble bubble = obj.GetComponent<Bubble>();
-        bubble.SetType(GetRandomType());
-        bubble.x = x;
-        bubble.y = y;
+        bubble.SetType((BubbleType)Random.Range(1, 5));
+        bubble.x = realX;
+        bubble.y = y * 0.93f;
+        bubble.b = realX - x;
+        bubble.startCondition = true;
         grid[x, y] = bubble;
     }
 
-    BubbleType GetRandomType()
+    public void CheckMatch(Bubble bubble)
     {
-        return (BubbleType)Random.Range(1, 5);
-    }
-
-    public void CheckMatch(Bubble startBubble)
-    {
-        if (startBubble == null) return;
-
+        if (bubble == null) return;
         matchesFound.Clear();
-        FindSameColor(startBubble);
-
+        
+        FindMatches(bubble);
         if (matchesFound.Count >= 3)
         {
             RemoveMatches();
-            ProcessFallingBubbles();
+            ProcessFalling();
         }
     }
 
-    void FindSameColor(Bubble bubble)
-    {
-        var queue = new Queue<Bubble>();
+    public void FindMatches(Bubble bubble)
+    { 
+        var queue= new Queue<Bubble>();
         queue.Enqueue(bubble);
         matchesFound.Add(bubble);
-
         while (queue.Count > 0)
-        {
-            Bubble current = queue.Dequeue();
-            foreach (Bubble neighbor in GetNeighbors(current))
+        { 
+            var current = queue.Dequeue();
+            var neighbours = GetNeighbours(current);
+            foreach (var neighbor in neighbours)
             {
-                if (neighbor.type == bubble.type && !matchesFound.Contains(neighbor))
+                if (neighbor.type == bubble.type && matchesFound.Contains(neighbor) == false)
                 {
                     matchesFound.Add(neighbor);
                     queue.Enqueue(neighbor);
@@ -76,38 +73,57 @@ public class BubbleGrid : MonoBehaviour
         }
     }
 
+    public List<Bubble> GetNeighbours(Bubble startBubble)
+    {
+        var offset = ((int)startBubble.y % 2 == 0) ? 0 : -1;
+        var dx = new[] {-1, 1, 0+offset, 1+offset, 0+offset, 1+offset};
+        var dy = new[] { 0, 0, -1, -1, 1, 1 };
+        var neighbour = new List<Bubble>();
+        for (int i = 0; i < dx.Length; i++)
+        {
+            var nx = dx[i] + (int)startBubble.x;
+            var ny = dy[i] + (int)startBubble.y;
+
+            if (nx >= 0 && nx < width && ny >= 0 && ny < height)
+            { 
+                if (grid[nx, ny] !=null) neighbour.Add(grid[nx, ny]);
+            }
+        }
+        return neighbour;
+    }
+
     void RemoveMatches()
     {
-        foreach (Bubble b in matchesFound)
+        foreach (var b in matchesFound)
         {
-            grid[b.x, b.y] = null;
+            grid[(int)b.x, (int)b.y] = null;
             Destroy(b.gameObject);
         }
     }
 
-
-    public void ProcessFallingBubbles()
+    void ProcessFalling()
     {
-        var connectedToCeiling = new HashSet<Bubble>();
+        var connectedToCeil = new HashSet<Bubble>();
         var queue = new Queue<Bubble>();
         for (int x = 0; x < width; x++)
         {
             if (grid[x, height - 1] != null)
-            {
-                Bubble topBubble = grid[x, height - 1];
-                connectedToCeiling.Add(topBubble);
+            { 
+                var topBubble = grid[x, height - 1];
+                connectedToCeil.Add(topBubble);
                 queue.Enqueue(topBubble);
             }
         }
 
         while (queue.Count > 0)
-        {
-            Bubble current = queue.Dequeue();
-            foreach (Bubble neighbor in GetNeighbors(current))
+        { 
+            Bubble bubble = queue.Dequeue();
+            var neighbours = GetNeighbours(bubble);
+            foreach (var neighbor in neighbours)
             {
-                if (!connectedToCeiling.Contains(neighbor))
+                if (connectedToCeil.Contains(neighbor) == false)
                 {
-                    connectedToCeiling.Add(neighbor);
+                    connectedToCeil.Add(neighbor);
                     queue.Enqueue(neighbor);
                 }
             }
@@ -116,43 +132,22 @@ public class BubbleGrid : MonoBehaviour
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
-            {
-                Bubble b = grid[x, y];
-                if (b != null && !connectedToCeiling.Contains(b))
-                {
+            { 
+                var b = grid[x, y];
+                if (connectedToCeil.Contains(b) == false && b!=null)
+                { 
                     toFall.Add(b);
-                    grid[x, y] = null;
                 }
             }
         }
-
-        foreach (Bubble b in toFall)
+        Debug.Log($"Должно быть удалено {toFall.Count} объектов");
+        foreach (var b in toFall)
         {
-            StartCoroutine(Bubble.FallToPosition(b.transform, new Vector3(b.x, 0, 0)));
+            grid[(int)b.x, (int)b.y] = null;
+            StartCoroutine(Bubble.FallToPosition(b.transform, new Vector3(b.x + b.b, 0, 0)));
         }
     }
 
-
-
-    List<Bubble> GetNeighbors(Bubble b)
-    {
-        var neighbors = new List<Bubble>();
-        int[] dx = { 0, 0, 1, -1 };
-        int[] dy = { 1, -1, 0, 0 };
-
-        for (int i = 0; i < 4; i++)
-        {
-            int nx = b.x + dx[i];
-            int ny = b.y + dy[i];
-
-            if (nx >= 0 && nx < width && ny >= 0 && ny < height)
-            {
-                if (grid[nx, ny] != null)
-                    neighbors.Add(grid[nx, ny]);
-            }
-        }
-        return neighbors;
-    }
 }
 
 

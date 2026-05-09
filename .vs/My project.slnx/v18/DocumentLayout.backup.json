@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "C:\\Users\\thunder\\My project\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|c:\\users\\thunder\\my project\\assets\\scripts\\bubble.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\bubble.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|c:\\users\\thunder\\my project\\assets\\scripts\\shooter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\shooter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|c:\\users\\thunder\\my project\\assets\\scripts\\bubblegrid.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\bubblegrid.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -11,12 +19,12 @@
       "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\match3grid.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|c:\\users\\thunder\\my project\\assets\\scripts\\bubble.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\bubble.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|c:\\users\\thunder\\my project\\assets\\scripts\\cage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\cage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|c:\\users\\thunder\\my project\\assets\\scripts\\gamemanger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\gamemanger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,54 +38,77 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
+              "Title": "Shooter.cs",
+              "DocumentMoniker": "C:\\Users\\thunder\\My project\\Assets\\scripts\\Shooter.cs",
+              "RelativeDocumentMoniker": "Assets\\scripts\\Shooter.cs",
+              "ToolTip": "C:\\Users\\thunder\\My project\\Assets\\scripts\\Shooter.cs",
+              "RelativeToolTip": "Assets\\scripts\\Shooter.cs",
+              "ViewState": "AgIAAEAAAAAAAAAAAAAcwFUAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-29T17:12:23.162Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "GameManger.cs",
+              "DocumentMoniker": "C:\\Users\\thunder\\My project\\Assets\\scripts\\GameManger.cs",
+              "RelativeDocumentMoniker": "Assets\\scripts\\GameManger.cs",
+              "ToolTip": "C:\\Users\\thunder\\My project\\Assets\\scripts\\GameManger.cs",
+              "RelativeToolTip": "Assets\\scripts\\GameManger.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-02T13:46:48.063Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "Bubble.cs",
               "DocumentMoniker": "C:\\Users\\thunder\\My project\\Assets\\scripts\\Bubble.cs",
               "RelativeDocumentMoniker": "Assets\\scripts\\Bubble.cs",
               "ToolTip": "C:\\Users\\thunder\\My project\\Assets\\scripts\\Bubble.cs",
               "RelativeToolTip": "Assets\\scripts\\Bubble.cs",
-              "ViewState": "AgIAAAoAAAAAAAAAAAAgwBkAAAAWAAAAAAAAAA==",
+              "ViewState": "AgIAABgAAAAAAAAAAAAowDgAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-21T09:34:32.408Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "Cage.cs",
               "DocumentMoniker": "C:\\Users\\thunder\\My project\\Assets\\scripts\\Cage.cs",
               "RelativeDocumentMoniker": "Assets\\scripts\\Cage.cs",
               "ToolTip": "C:\\Users\\thunder\\My project\\Assets\\scripts\\Cage.cs",
               "RelativeToolTip": "Assets\\scripts\\Cage.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACoAAAAFAAAAAAAAAA==",
+              "ViewState": "AgIAABMAAAAAAAAAAAA1wB0AAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-21T09:32:54.626Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "BubbleGrid.cs",
               "DocumentMoniker": "C:\\Users\\thunder\\My project\\Assets\\scripts\\BubbleGrid.cs",
               "RelativeDocumentMoniker": "Assets\\scripts\\BubbleGrid.cs",
-              "ToolTip": "C:\\Users\\thunder\\My project\\Assets\\scripts\\BubbleGrid.cs*",
-              "RelativeToolTip": "Assets\\scripts\\BubbleGrid.cs*",
-              "ViewState": "AgIAADwAAAAAAAAAAAAQwE8AAAAFAAAAAAAAAA==",
+              "ToolTip": "C:\\Users\\thunder\\My project\\Assets\\scripts\\BubbleGrid.cs",
+              "RelativeToolTip": "Assets\\scripts\\BubbleGrid.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAgwCQAAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-21T09:21:56.533Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-21T09:21:56.533Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "Match3Grid.cs",
               "DocumentMoniker": "C:\\Users\\thunder\\My project\\Assets\\scripts\\Match3Grid.cs",
               "RelativeDocumentMoniker": "Assets\\scripts\\Match3Grid.cs",
               "ToolTip": "C:\\Users\\thunder\\My project\\Assets\\scripts\\Match3Grid.cs",
               "RelativeToolTip": "Assets\\scripts\\Match3Grid.cs",
-              "ViewState": "AgIAAEcBAAAAAAAAAAAgwJQBAAAbAAAAAAAAAA==",
+              "ViewState": "AgIAAF0BAAAAAAAAAAAAAHAAAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-02T19:13:14.666Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-02T19:13:14.666Z"
             }
           ]
         }

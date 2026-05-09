@@ -11,10 +11,11 @@ public class Cage: MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    public void SetType(CageType newType)
+    public void SetType(CageType newType, Sprite visual)
     { 
         type = newType;
-        UpdateColour();
+        spriteRenderer.sprite = visual;
+        spriteRenderer.color = Color.white;
     }
 
     void OnMouseDown()
@@ -40,25 +41,6 @@ public class Cage: MonoBehaviour
         }
         if (obj!=null)
             obj.position = targetPos;
-    }
-
-    void UpdateColour()
-    {
-        switch (type)
-        {
-            case CageType.Red:
-                spriteRenderer.color = Color.red; 
-                break;
-            case CageType.Blue:
-                spriteRenderer.color = Color.blue;
-                break;
-            case CageType.Green:
-                spriteRenderer.color = Color.green;
-                break;
-            case CageType.Yellow:
-                spriteRenderer.color = Color.yellow;
-                break;
-        }
     }
 }
 public enum CageType

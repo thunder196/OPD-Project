@@ -13,4 +13,4 @@ UserSettings/
 *.tmp
 
 .DS_Store
-Thumbs.db
+Thumbs.db.vs/

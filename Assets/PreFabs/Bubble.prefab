@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 5015314946669593242}
   - component: {fileID: 3838366489507236427}
   - component: {fileID: -5328228166107909395}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Bubble
-  m_TagString: Untagged
+  m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -144,7 +144,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_AngularDamping: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -170,3 +170,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Bubble
   type: 0
+  rb: {fileID: 0}
+  x: 0
+  y: 0
+  b: 0
+  isStopped: 0
+  startCondition: 0
