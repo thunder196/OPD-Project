@@ -10,11 +10,10 @@ public class Match3Grid : MonoBehaviour
     public GameObject Match3Prefab; 
     private Cage[,] grid;
     private Cage firstSelected;
-    [Header("UI Setting")]
     public TextMeshProUGUI scoreText;
     private int currentScore = 0;
+
     private List<Cage> listToRemove = new();
-    [Header("Visual Assets")]
     public Sprite[] crystalSprites;
     void Start()
     {
@@ -330,7 +329,7 @@ public class Match3Grid : MonoBehaviour
         CollapseColumn();
         yield return new WaitForSeconds(0.2f);
         FillEmptySpaces();
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.25f);
         if (HasAnyMatchesOnBoard())
         {
             CheckMatchAfterFall();
@@ -403,7 +402,7 @@ public class Match3Grid : MonoBehaviour
     void UpdateScoreUI()
     { 
         if (scoreText != null)
-            scoreText.text = "Score: " + currentScore.ToString();
+            scoreText.text = "Score: \n" + currentScore.ToString();
     }
 
 }

@@ -7,6 +7,14 @@
       "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\match3grid.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|c:\\users\\thunder\\my project\\assets\\scripts\\gamemanger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\gamemanger.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|c:\\users\\thunder\\my project\\assets\\scripts\\uimanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\uimanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|c:\\users\\thunder\\my project\\assets\\scripts\\cage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B4CD19DA-EE08-5225-FB19-1D0DFA4113DD}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\cage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -18,20 +26,43 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "UIManager.cs",
+              "DocumentMoniker": "C:\\Users\\thunder\\My project\\Assets\\scripts\\UIManager.cs",
+              "RelativeDocumentMoniker": "Assets\\scripts\\UIManager.cs",
+              "ToolTip": "C:\\Users\\thunder\\My project\\Assets\\scripts\\UIManager.cs",
+              "RelativeToolTip": "Assets\\scripts\\UIManager.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-17T10:32:54.039Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "GameManger.cs",
+              "DocumentMoniker": "C:\\Users\\thunder\\My project\\Assets\\scripts\\GameManger.cs",
+              "RelativeDocumentMoniker": "Assets\\scripts\\GameManger.cs",
+              "ToolTip": "C:\\Users\\thunder\\My project\\Assets\\scripts\\GameManger.cs",
+              "RelativeToolTip": "Assets\\scripts\\GameManger.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAA6wC4AAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-09T16:22:27.675Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "Cage.cs",
               "DocumentMoniker": "C:\\Users\\thunder\\My project\\Assets\\scripts\\Cage.cs",
               "RelativeDocumentMoniker": "Assets\\scripts\\Cage.cs",
               "ToolTip": "C:\\Users\\thunder\\My project\\Assets\\scripts\\Cage.cs",
               "RelativeToolTip": "Assets\\scripts\\Cage.cs",
-              "ViewState": "AgIAABQAAAAAAAAAAAA6wCsAAAAFAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACsAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-04-21T09:32:54.626Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-04-21T09:32:54.626Z"
             },
             {
               "$type": "Document",
@@ -41,7 +72,7 @@
               "RelativeDocumentMoniker": "Assets\\scripts\\Match3Grid.cs",
               "ToolTip": "C:\\Users\\thunder\\My project\\Assets\\scripts\\Match3Grid.cs",
               "RelativeToolTip": "Assets\\scripts\\Match3Grid.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAE8AAAAZAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAJQBAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-04-02T19:13:14.666Z",
               "EditorCaption": ""

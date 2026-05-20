@@ -8,8 +8,17 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
+  - enabled: 0
+    path: Assets/Scenes/MainMenu.unity
+    guid: 865ebf446ba3394478528b683b664fcd
+  - enabled: 0
+    path: Assets/Scenes/Match3Game.unity
+    guid: a1e526f680db9264a9a200fd6e073f62
   - enabled: 1
-    path: Assets/Scenes/BubbleShooterGame.unity
+    path: Assets/Scenes/BubbleBlastGame.unity
     guid: ff6065c1bf747ce4b977226764000b8c
+  - enabled: 0
+    path: Assets/Scenes/UpgradeShop.unity
+    guid: 5721aa51730ee7d44ada18318d7f730c
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
