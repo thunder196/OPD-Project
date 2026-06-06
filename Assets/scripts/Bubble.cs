@@ -6,8 +6,8 @@ public class Bubble: MonoBehaviour
     public BubbleType type;
     private SpriteRenderer spriteRenderer;
     public Rigidbody2D rb;
-    public float x;
-    public float y;
+    public int x;
+    public int y;
     public float b;
     public bool isStopped=false;
     float rowHeight = 0.93f;
@@ -68,24 +68,44 @@ public class Bubble: MonoBehaviour
         rb.linearVelocity = Vector3.zero;
         rb.bodyType = RigidbodyType2D.Kinematic;
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+        if (startCondition)
+        {
+            transform.position = new Vector3(x + b, y * 0.93f, 0);
+        }
+        else
+        {
+            SetPosition();
+        }
+    }
+
+    void SetPosition()
+    {
         y = Mathf.RoundToInt(transform.position.y / rowHeight);
-        b = ((int)y % 2 == 0) ? 0.5f : 0f;
+        b = ((y+BubbleGrid.shiftcount) % 2 == 0) ? 0.5f : 0f;
         x = Mathf.RoundToInt(transform.position.x - b);
-        x = Mathf.Clamp(x, 0f, 9f); 
-        transform.position = new Vector3(x + b, y*rowHeight, 0);
-        BubbleGrid grid = FindAnyObjectByType<BubbleGrid>();
+        x = Mathf.Clamp(x, 0, 9);
+        transform.position = new Vector3(x + b, y * rowHeight, 0);
+        var grid = FindAnyObjectByType<BubbleGrid>();
         if (grid != null)
         {
-            if (x >= 0 && x < grid.width && y >= 0 && y < grid.height && !startCondition)
+            if (x >= 0 && x < grid.width && y >= 0 && y < grid.height)
             {
-                grid.grid[(int)x, (int)y] = this;
+                grid.grid[x, y] = this;
                 grid.CheckMatch(this);
+
+                grid.RegisterTurn();
             }
         }
         startCondition = true;
+
+        var gun = FindAnyObjectByType<shooter>();
+        if (gun != null)
+        {
+            gun.UnlockShooter();
+        }
     }
 
-    public static IEnumerator FallToPosition(Transform obj, Vector3 targetPos, float duration = 0.4f)
+    public static IEnumerator FallToPosition(Transform obj, Vector3 targetPos, int flag, float duration = 0.2f)
     {
         if (obj == null) yield break;
         Vector3 startPos = obj.position;
@@ -99,8 +119,10 @@ public class Bubble: MonoBehaviour
             time += Time.deltaTime;
             yield return null;
         }
-
-        if (obj != null)
+        var nx = Mathf.Round(targetPos.x * 100f) / 100f;
+        var ny = Mathf.Round(targetPos.y * 100f) / 100f;
+        obj.position = new Vector3(nx, ny, 0);
+        if (obj != null && flag==1)
         {
             Destroy(obj.gameObject);
         }

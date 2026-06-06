@@ -12,6 +12,7 @@ public class shooter: MonoBehaviour
     public float maxDistance = 8f;
     public int maxReflections = 2;
     public LayerMask collisionMask;
+    private bool canShoot = false;
     private void Start()
     {
         lineRenderer = GetComponent<LineRenderer>();
@@ -21,12 +22,15 @@ public class shooter: MonoBehaviour
     void Update()
     {
         DrawTrajectory();
-        if (Input.GetMouseButtonDown(0))
-            Shoot(); 
+        if (Input.GetMouseButtonDown(0) && canShoot && currentBall != null)
+        {
+            Shoot();
+        }
     }
 
     void Shoot()
     {
+        canShoot = false;
         if (currentBall == null) return;
         currentBall.transform.SetParent(null);
         var rb = currentBall.GetComponent<Rigidbody2D>();
@@ -36,7 +40,6 @@ public class shooter: MonoBehaviour
         Vector2 direction = ((Vector2)mousePos - (Vector2)firePoint.position).normalized;
         rb.linearVelocity = direction * shootForce;
         currentBall = null;
-        Invoke("PrepareNextBall", 0.4f);
     }
 
     void PrepareNextBall()
@@ -49,6 +52,7 @@ public class shooter: MonoBehaviour
         Bubble bubble = currentBall.GetComponent <Bubble>();
         bubble.SetType((BubbleType)Random.Range(1, 5));
         bubble.isStopped = false;
+        canShoot = true;
     }
 
     void DrawTrajectory()
@@ -116,6 +120,11 @@ public class shooter: MonoBehaviour
                 break;
             }
         }
+    }
+
+    public void UnlockShooter()
+    {
+        PrepareNextBall();
     }
 
 }

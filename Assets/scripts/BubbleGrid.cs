@@ -8,7 +8,8 @@ public class BubbleGrid : MonoBehaviour
     public GameObject BubblePrefab;
     public Bubble[,] grid;
     private HashSet<Bubble> matchesFound = new HashSet<Bubble>();
-
+    private int shotCount = 0;
+    public static int shiftcount = 0;
     private void Start()
     {
         grid = new Bubble[width, height];
@@ -22,20 +23,21 @@ public class BubbleGrid : MonoBehaviour
             for (int y = height - 1; y > height - 5; y--)
             {
                 var b = (y % 2 == 0) ? 0.5f : 0;
-                InitializedGrid(x, y, x + b);
+                InitializedGrid(x, y, b);
             }
         }
     }
 
-    void InitializedGrid(int x, int y, float realX)
+    void InitializedGrid(int x, int y, float b)
     {
-        var position = new Vector3(realX, y * 0.93f, 0);
-        var obj = Instantiate(BubblePrefab, position, Quaternion.identity);
+        grid[x, y] = null;
+        var position = new Vector3(x+b, y * 0.93f, 0);
+        var obj = Instantiate(BubblePrefab, position, Quaternion.identity, transform);
         Bubble bubble = obj.GetComponent<Bubble>();
         bubble.SetType((BubbleType)Random.Range(1, 5));
-        bubble.x = realX;
-        bubble.y = y * 0.93f;
-        bubble.b = realX - x;
+        bubble.x = x;
+        bubble.y = y;
+        bubble.b = b;
         bubble.startCondition = true;
         grid[x, y] = bubble;
     }
@@ -48,6 +50,7 @@ public class BubbleGrid : MonoBehaviour
         FindMatches(bubble);
         if (matchesFound.Count >= 3)
         {
+
             RemoveMatches();
             ProcessFalling();
         }
@@ -75,14 +78,14 @@ public class BubbleGrid : MonoBehaviour
 
     public List<Bubble> GetNeighbours(Bubble startBubble)
     {
-        var offset = ((int)startBubble.y % 2 == 0) ? 0 : -1;
+        var offset = (startBubble.b == 0.5f) ? 0 : -1;
         var dx = new[] {-1, 1, 0+offset, 1+offset, 0+offset, 1+offset};
         var dy = new[] { 0, 0, -1, -1, 1, 1 };
         var neighbour = new List<Bubble>();
         for (int i = 0; i < dx.Length; i++)
         {
-            var nx = dx[i] + (int)startBubble.x;
-            var ny = dy[i] + (int)startBubble.y;
+            var nx = dx[i] + startBubble.x;
+            var ny = dy[i] + startBubble.y;
 
             if (nx >= 0 && nx < width && ny >= 0 && ny < height)
             { 
@@ -96,7 +99,7 @@ public class BubbleGrid : MonoBehaviour
     {
         foreach (var b in matchesFound)
         {
-            grid[(int)b.x, (int)b.y] = null;
+            grid[b.x, b.y] = null;
             Destroy(b.gameObject);
         }
     }
@@ -117,7 +120,7 @@ public class BubbleGrid : MonoBehaviour
 
         while (queue.Count > 0)
         { 
-            Bubble bubble = queue.Dequeue();
+            var bubble = queue.Dequeue();
             var neighbours = GetNeighbours(bubble);
             foreach (var neighbor in neighbours)
             {
@@ -140,14 +143,64 @@ public class BubbleGrid : MonoBehaviour
                 }
             }
         }
-        Debug.Log($"Должно быть удалено {toFall.Count} объектов");
         foreach (var b in toFall)
         {
-            grid[(int)b.x, (int)b.y] = null;
-            StartCoroutine(Bubble.FallToPosition(b.transform, new Vector3(b.x + b.b, 0, 0)));
+            grid[b.x, b.y] = null;
+            StartCoroutine(Bubble.FallToPosition(b.transform, new Vector3(b.x + b.b, 0, 0), 1));
         }
     }
 
+    public void RegisterTurn()
+    {
+        shotCount++;
+        if (shotCount >= 5)
+        {
+            shotCount = 0;
+            shiftcount += 1;
+            ShiftGridDown();
+        }
+    }
+
+    void ShiftGridDown()
+    {
+        for (int x = 0; x < width; x++)
+        {
+            if (grid[x, 0] != null)
+            {
+                Debug.Log("Game Over! Пузыри достигли нижнего края.");
+                return;
+            }
+        }
+
+        for (int y = 1; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                var b = grid[x, y];
+                if (b != null)
+                {
+                    StartCoroutine(Bubble.FallToPosition(b.transform, new Vector3(b.x + b.b, (b.y-1) * 0.93f, 0), 0));
+
+                    b.y = y - 1;
+
+                    grid[x, y - 1] = b;
+                    grid[x, y] = null;
+                }
+            }
+        }
+
+        InitializedHighRow();
+    }
+
+    void InitializedHighRow()
+    {
+        var y = height - 1;
+        var b = ((y+shiftcount) % 2 == 0) ? 0.5f : 0;
+        for (int x = 0; x < width; x++)
+        {
+            InitializedGrid(x, y, b);
+        }
+    }
 }
 
 
